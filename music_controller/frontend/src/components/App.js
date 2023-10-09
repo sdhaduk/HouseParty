@@ -1,10 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import HomePage from "./HomePage";
 
-export default function App(props) {
-    return <h1>Hello</h1>
-}
+
+const App = () => {
+  return (
+  <div>
+    <HomePage />
+  </div>
+  )
+};
 
 const appDiv = ReactDOM.createRoot(document.getElementById("app"));
-
 appDiv.render(<App />);
+
+export default App;
