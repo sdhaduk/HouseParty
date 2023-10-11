@@ -8,13 +8,14 @@ import FormControl from "@material-ui/core/FormControl";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 
 
 const CreateRoomPage = () => {
   const defaultVotes = 2; 
   const [guestCanPause, setGuestCanPause] = useState(true);
   const [voteToSkip, setVoteToSkip] = useState(defaultVotes);
+  const navigate = useNavigate();
   
   function handleCreateRoomButtonPressed() {
     const requestOptions = {
@@ -28,8 +29,8 @@ const CreateRoomPage = () => {
 
     fetch('/api/create-room', requestOptions)
     .then((response) => response.json())
-    .then((data) => console.log(data));
-  }
+    .then((data) => navigate('/room/' + data.code));
+  }; 
 
   return (
     <Grid container spacing={1}>
