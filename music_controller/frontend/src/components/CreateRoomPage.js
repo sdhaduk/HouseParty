@@ -10,8 +10,9 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { Form, Link } from "react-router-dom";
 
+
 const CreateRoomPage = () => {
-  const defaultVotes = 2;
+  const defaultVotes = 2; 
   const [guestCanPause, setGuestCanPause] = useState(true);
   const [voteToSkip, setVoteToSkip] = useState(defaultVotes);
 
