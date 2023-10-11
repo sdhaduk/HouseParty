@@ -15,7 +15,7 @@ const CreateRoomPage = () => {
   const defaultVotes = 2; 
   const [guestCanPause, setGuestCanPause] = useState(true);
   const [voteToSkip, setVoteToSkip] = useState(defaultVotes);
-
+  
   function handleCreateRoomButtonPressed() {
     const requestOptions = {
       method: 'POST',
