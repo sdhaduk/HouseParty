@@ -29,7 +29,7 @@ const CreateRoomPage = () => {
 
     fetch('/api/create-room', requestOptions)
     .then((response) => response.json())
-    .then((data) => navigate('/room/' + data.code));
+    .then((data) => navigate(`/room/${data.code}`));
   }; 
 
   return (
