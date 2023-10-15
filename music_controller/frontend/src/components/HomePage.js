@@ -15,7 +15,6 @@ const HomePage = () => {
         .then((response) => response.json())
         .then((data) => {
           setRoomCode(data.code);
-          console.log(roomCode);
         });
     }
     autoEnter();
@@ -29,14 +28,19 @@ const HomePage = () => {
     }
   };
 
+  const clearRoomCode = () => {
+    setRoomCode(null);
+  }
+
   return (
       <Routes>
         <Route path="/" element={ CheckSession() } />
         <Route path="/join" element={<JoinRoomPage />} />
         <Route path="/create" element={<CreateRoomPage />} />
-        <Route path="/room/:roomCode" element={<Room />} />
+        <Route path="/room/:roomCode" element={<Room leaveRoom = {clearRoomCode} />} />
       </Routes>
   );
 };
 
 export default HomePage;
+  
