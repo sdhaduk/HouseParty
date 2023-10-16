@@ -58,10 +58,10 @@ const Room = ({ leaveRoom }) => {
     <Grid container spacing={1} align="center">
       <Grid item xs={12}>
         <CreateRoomPage
-          update={true}
-          voteToSkip={voteToSkip}
-          guestCanPause={guestCanPause}
-          roomCode={roomCode}
+          updateProp={true}
+          voteToSkipProp={voteToSkip}
+          guestCanPauseProp={guestCanPause}
+          roomCodeProp={roomCode}
         />
       </Grid>
       <Grid item xs={12}>
