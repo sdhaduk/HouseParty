@@ -1,11 +1,13 @@
 from .models import SpotifyToken
 from django.utils import timezone
 from datetime import timedelta
-from requests import post
+from requests import post, put, get
 
 from dotenv import load_dotenv
 import os
 load_dotenv()
+
+BASE_URL = 'https://api.spotify.com/v1/me/'
 
 
 def get_user_tokens(session_id):
@@ -19,7 +21,7 @@ def get_user_tokens(session_id):
 def update_or_create_user_tokens(session_id, access_token, token_type, expires_in, refresh_token):
     tokens = get_user_tokens(session_id)
     expires_in = timezone.now() + timedelta(seconds=expires_in)
- 
+
     if tokens:
         tokens.access_token = access_token
         tokens.refresh_token = refresh_token
@@ -38,9 +40,9 @@ def is_spotify_authenticated(session_id):
     if tokens:
         expiry = tokens.expires_in
         if expiry <= timezone.now():
-            refresh_spotify_token(tokens) 
+            refresh_spotify_token(tokens)
         return True
-    
+
     return False
 
 
@@ -58,10 +60,26 @@ def refresh_spotify_token(session_id):
     expires_in = response.get('expires_in')
     new_refresh_token = response.get('refresh_token')
 
-    update_or_create_user_tokens(session_id, access_token=access_token, token_type=token_type, refresh_token=new_refresh_token, expires_in=expires_in)
+    update_or_create_user_tokens(session_id, access_token=access_token,
+                                 token_type=token_type, refresh_token=new_refresh_token, expires_in=expires_in)
 
 
+def execute_spotify_api_request(session_id, endpoint, post_=False, put_=False):
+    tokens = get_user_tokens(session_id)
+    headers = {'Content-Type': 'application/json',
+              'Authorization': "Bearer  " + tokens.access_token}
+    if post_:
+        post(BASE_URL + endpoint, headers=headers)
 
+    elif put_:
+        put(BASE_URL + endpoint, headers=headers)
 
+    else:
+        response = get(BASE_URL + endpoint, {}, headers=headers)
 
+        try:
+            return response.json()
+        except:
+            return {'Error': 'Issue With Request'}
+    
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Grid, Typography, Button } from "@material-ui/core";
 import CreateRoomPage from "./CreateRoomPage";
@@ -9,22 +9,30 @@ const Room = ({ leaveRoom }) => {
   const [isHost, setIsHost] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
+  const [song, setSong] = useState({});
   const { roomCode } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const interval = setInterval(getCurrentSong, 1000)
+
+    return () => clearInterval(interval);
+  }, [song]); 
+
 
   const authenticateSpotify = () => {
     fetch("/spotify/is-authenticated")
       .then((response) => response.json())
       .then((data) => {
-        setSpotifyAuthenticated(data.status) 
+        setSpotifyAuthenticated(data.status);
         if (!data.status) {
-          fetch('/spotify/get-auth-url')
-          .then((response) => response.json())
-          .then((data) => {
-            window.location.replace(data.url);
-          })
+          fetch("/spotify/get-auth-url")
+            .then((response) => response.json())
+            .then((data) => {
+              window.location.replace(data.url);
+            });
         }
-      }); 
+      });
   };
 
   const getRoomDetails = () => {
@@ -43,7 +51,7 @@ const Room = ({ leaveRoom }) => {
       });
     if (isHost) {
       authenticateSpotify();
-      console.log(spotifyAuthenticated)
+      console.log(spotifyAuthenticated);
     }
   };
 
@@ -97,7 +105,20 @@ const Room = ({ leaveRoom }) => {
     );
   };
 
+  const getCurrentSong = () => {
+    fetch("/spotify/current-song")
+      .then((response) => {
+        if (!response.ok) {
+          return {};
+        } else {
+          return response.json();
+        }
+      })
+      .then((data) => setSong(data));
+  };
+
   getRoomDetails();
+
 
   return showSettings ? (
     renderSettings()
@@ -106,24 +127,6 @@ const Room = ({ leaveRoom }) => {
       <Grid item xs={12}>
         <Typography variant="h4" component="h4">
           Code: {roomCode}
-        </Typography>
-      </Grid>
-
-      <Grid item xs={12}>
-        <Typography variant="h6" component="h6">
-          Votes: {voteToSkip}
-        </Typography>
-      </Grid>
-
-      <Grid item xs={12}>
-        <Typography variant="h6" component="h6">
-          Guests Can Pause: {guestCanPause.toString()}
-        </Typography>
-      </Grid>
-
-      <Grid item xs={12}>
-        <Typography variant="h6" component="h6">
-          Host: {isHost.toString()}
         </Typography>
       </Grid>
 
