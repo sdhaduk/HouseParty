@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Grid, Typography, Button } from "@material-ui/core";
 import CreateRoomPage from "./CreateRoomPage";
+import MusicPlayer from "./MusicPlayer";
 
 const Room = ({ leaveRoom }) => {
   const [voteToSkip, setVoteToSkip] = useState(2);
@@ -51,7 +52,6 @@ const Room = ({ leaveRoom }) => {
       });
     if (isHost) {
       authenticateSpotify();
-      console.log(spotifyAuthenticated);
     }
   };
 
@@ -129,6 +129,8 @@ const Room = ({ leaveRoom }) => {
           Code: {roomCode}
         </Typography>
       </Grid>
+
+      <MusicPlayer song={song}/>
 
       {isHost ? renderSettingsButton() : null}
 

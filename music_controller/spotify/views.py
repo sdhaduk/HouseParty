@@ -91,8 +91,8 @@ class CurrentSong(APIView):
             artist_string += name
         
         song = {
-            'title': item.get('name'),
-            'artist(s)': artist_string,
+            'title': item.get('name'), 
+            'artists': artist_string,
             'duration': duration,
             'time': progress,
             'image_url': album_cover,
