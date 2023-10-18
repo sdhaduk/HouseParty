@@ -8,8 +8,24 @@ const Room = ({ leaveRoom }) => {
   const [guestCanPause, setGuestCanPause] = useState(false);
   const [isHost, setIsHost] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
   const { roomCode } = useParams();
   const navigate = useNavigate();
+
+  const authenticateSpotify = () => {
+    fetch("/spotify/is-authenticated")
+      .then((response) => response.json())
+      .then((data) => {
+        setSpotifyAuthenticated(data.status) 
+        if (!data.status) {
+          fetch('/spotify/get-auth-url')
+          .then((response) => response.json())
+          .then((data) => {
+            window.location.replace(data.url);
+          })
+        }
+      }); 
+  };
 
   const getRoomDetails = () => {
     fetch("/api/get-room" + "?code=" + roomCode)
@@ -25,6 +41,10 @@ const Room = ({ leaveRoom }) => {
         setGuestCanPause(data.guest_can_pause);
         setIsHost(data.is_host);
       });
+    if (isHost) {
+      authenticateSpotify();
+      console.log(spotifyAuthenticated)
+    }
   };
 
   const leaveButtonPressed = () => {
@@ -55,33 +75,33 @@ const Room = ({ leaveRoom }) => {
 
   const renderSettings = () => {
     return (
-    <Grid container spacing={1} align="center">
-      <Grid item xs={12}>
-        <CreateRoomPage
-          updateProp={true}
-          voteToSkipProp={voteToSkip}
-          guestCanPauseProp={guestCanPause}
-          roomCodeProp={roomCode}
-        />
+      <Grid container spacing={1} align="center">
+        <Grid item xs={12}>
+          <CreateRoomPage
+            updateProp={true}
+            voteToSkipProp={voteToSkip}
+            guestCanPauseProp={guestCanPause}
+            roomCodeProp={roomCode}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => setShowSettings(false)}
+          >
+            Close
+          </Button>
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => setShowSettings(false)}
-        >
-          Close
-        </Button>
-      </Grid>
-    </Grid>
     );
   };
 
   getRoomDetails();
 
   return showSettings ? (
-      renderSettings()
-    ) : ( 
+    renderSettings()
+  ) : (
     <Grid container spacing={1} align="center">
       <Grid item xs={12}>
         <Typography variant="h4" component="h4">

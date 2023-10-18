@@ -14,7 +14,9 @@ const HomePage = () => {
       fetch("/api/user-in-room")
         .then((response) => response.json())
         .then((data) => {
-          setRoomCode(data.code);
+          if (data.code != null) {
+            setRoomCode(data.code);
+          }
         });
     }
     autoEnter();
