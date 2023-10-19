@@ -54,14 +54,13 @@ def refresh_spotify_token(session_id):
         'client_id': os.environ.get('CLIENT_ID'),
         'client_secret': os.environ.get('CLIENT_SECRET')
     }).json()
-
+ 
     access_token = response.get('access_token')
     token_type = response.get('token_type')
     expires_in = response.get('expires_in')
-    new_refresh_token = response.get('refresh_token')
 
     update_or_create_user_tokens(session_id, access_token=access_token,
-                                 token_type=token_type, refresh_token=new_refresh_token, expires_in=expires_in)
+                                 token_type=token_type, refresh_token=refresh_token, expires_in=expires_in)
 
 
 def execute_spotify_api_request(session_id, endpoint, post_=False, put_=False):
