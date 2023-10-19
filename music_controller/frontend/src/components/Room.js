@@ -84,7 +84,7 @@ const Room = ({ leaveRoom }) => {
   const renderSettings = () => {
     return (
       <Grid container spacing={1} align="center">
-        <Grid item xs={12}>
+        <Grid item xs={12} align='center'>
           <CreateRoomPage
             updateProp={true}
             voteToSkipProp={voteToSkip}
@@ -92,7 +92,7 @@ const Room = ({ leaveRoom }) => {
             roomCodeProp={roomCode}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} align='center'>
           <Button
             variant="contained"
             color="secondary"
@@ -124,7 +124,7 @@ const Room = ({ leaveRoom }) => {
     renderSettings()
   ) : (
     <Grid container spacing={1} align="center">
-      <Grid item xs={12}>
+      <Grid item xs={12} align='center'>
         <Typography variant="h4" component="h4">
           Code: {roomCode}
         </Typography>
@@ -134,7 +134,7 @@ const Room = ({ leaveRoom }) => {
 
       {isHost ? renderSettingsButton() : null}
 
-      <Grid item xs={12}>
+      <Grid item xs={12} align='center'>
         <Button
           variant="contained"
           color="secondary"

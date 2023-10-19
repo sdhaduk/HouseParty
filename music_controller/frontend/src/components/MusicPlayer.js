@@ -31,9 +31,10 @@ const MusicPlayer = ({ song }) => {
   };
 
   return (
+    <div style={{ display:'flex', justifyContent:'center' }}>
     <Card>
       <Grid container alignItems="center">
-        <Grid item  align='center' xs={4}>
+        <Grid item align='center' xs={4}>
           <img src={song.image_url} height="100%" width="100%" />
         </Grid>
         <Grid item align='center' xs={8}>
@@ -61,6 +62,7 @@ const MusicPlayer = ({ song }) => {
       </Grid>
       <LinearProgress variant="determinate" value={songProgress} />
     </Card>
+    </div>
   );
 };
 
