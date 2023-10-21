@@ -64,7 +64,8 @@ const MusicPlayer = ({ song }) => {
             <IconButton
             onClick={() => skipSong()}
             >
-              <SkipNextIcon />
+            {song.votes}{" "} / {" "}{song.votes_required}
+            <SkipNextIcon />
             </IconButton> 
           </div>
 
